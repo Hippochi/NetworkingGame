@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameSystemManager : MonoBehaviour
 {
-    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, textNameInfo, textPasswordInfo, ticTacToeSquareButton, networkedClient;
+    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, textNameInfo, textPasswordInfo, ticTacToeSquareButton, networkedClient, GGWP, GLHF, CUCK;
 
     GameObject joinGameRoomButton;
 
@@ -37,6 +37,12 @@ public class GameSystemManager : MonoBehaviour
                 textPasswordInfo = go;
             else if (go.name == "TicTacToeSquareButton")
                 ticTacToeSquareButton = go;
+            else if (go.name == "GGWP")
+                GGWP = go;
+            else if (go.name == "GLHF")
+                GLHF = go;
+            else if (go.name == "CUCK")
+                CUCK = go;
 
         }
 
@@ -47,6 +53,10 @@ public class GameSystemManager : MonoBehaviour
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
 
         ticTacToeSquareButton.GetComponent<Button>().onClick.AddListener(TicTacToeSquareButtonPressed);
+
+        GGWP.GetComponent<Button>().onClick.AddListener(GGWPPressed);
+        GLHF.GetComponent<Button>().onClick.AddListener(GLHFPressed);
+        CUCK.GetComponent<Button>().onClick.AddListener(CUCKPressed);
 
         ChangeState(GameStates.LoginMenu);
 
@@ -146,6 +156,20 @@ public class GameSystemManager : MonoBehaviour
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToeSomethingSomethingPlay + "");
     }
 
+    public void GGWPPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGWPorElse + "");
+    }
+
+    public void GLHFPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GLHForElse + "");
+    }
+
+    public void CUCKPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.CUCKorElse + "");
+    }
 }
 
 

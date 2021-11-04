@@ -91,7 +91,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.2.68", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "192.168.2.38", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
@@ -159,6 +159,12 @@ public static class ClientToServerSignifiers
     public const int JoinQueueForGameRoom = 3;
 
     public const int TicTacToeSomethingSomethingPlay = 4; //will be changed when working on assignment
+
+    public const int GGWPorElse = 5;
+
+        public const int GLHForElse = 6;
+
+        public const int CUCKorElse = 7;
 }
 
 public static class ServerToClientSignifiers

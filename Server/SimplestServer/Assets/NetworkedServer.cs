@@ -215,6 +215,40 @@ public class NetworkedServer : MonoBehaviour
             }
         }
 
+        else if (signifier == ClientToServerSignifiers.GGWPorElse)
+        {
+
+            GameRoom gr = GetGameRoomWithClientID(id);
+
+            if (gr != null)
+            {
+                
+            }
+        }
+
+        else if (signifier == ClientToServerSignifiers.GLHForElse)
+        {
+
+            GameRoom gr = GetGameRoomWithClientID(id);
+
+            if (gr != null)
+            {
+
+            }
+        }
+
+        else if (signifier == ClientToServerSignifiers.CUCKorElse)
+        {
+
+            GameRoom gr = GetGameRoomWithClientID(id);
+
+            if (gr != null)
+            {
+
+            }
+        }
+
+
     }
 
     private void SavePlayerAccounts()
