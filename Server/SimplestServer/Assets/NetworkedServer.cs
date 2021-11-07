@@ -222,7 +222,7 @@ public class NetworkedServer : MonoBehaviour
 
             if (gr != null)
             {
-                
+                SendMessageToClient(ServerToClientSignifiers.ClientToClientMsgReceived + "," + csv[1], id);
             }
         }
 

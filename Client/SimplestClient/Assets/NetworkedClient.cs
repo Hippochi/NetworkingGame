@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class NetworkedClient : MonoBehaviour
 {
@@ -16,12 +17,14 @@ public class NetworkedClient : MonoBehaviour
     byte error;
     bool isConnected = false;
     int ourClientID;
+    private Text TextBox;
 
     GameObject gameSystemManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        TextBox = GameObject.Find("MessageField").GetComponent<UnityEngine.UI.Text>();
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
         foreach (GameObject go in allObjects)
@@ -143,7 +146,8 @@ public class NetworkedClient : MonoBehaviour
 
         else if (signifier == ServerToClientSignifiers.ClientToClientMsgReceived)
         {
-            // update text field text
+            Debug.Log("msgreceived");
+            TextBox.text = TextBox.text + csv[1];
         }
     }
 
