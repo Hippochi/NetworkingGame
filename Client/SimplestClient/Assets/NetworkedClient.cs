@@ -140,13 +140,18 @@ public class NetworkedClient : MonoBehaviour
         {
             Debug.Log("Opponent Play!"); 
         }
+
+        else if (signifier == ServerToClientSignifiers.ClientToClientMsgReceived)
+        {
+            // update text field text
+        }
     }
 
     public bool IsConnected()
     {
         return isConnected;
     }
-
+    
 
 }
 
@@ -160,11 +165,8 @@ public static class ClientToServerSignifiers
 
     public const int TicTacToeSomethingSomethingPlay = 4; //will be changed when working on assignment
 
-    public const int GGWPorElse = 5;
+    public const int ClientToClientMsgSent = 5;
 
-        public const int GLHForElse = 6;
-
-        public const int CUCKorElse = 7;
 }
 
 public static class ServerToClientSignifiers
@@ -182,5 +184,5 @@ public static class ServerToClientSignifiers
 
     public const int GameStart = 6;
 
-
+    public const int ClientToClientMsgReceived = 7;
 }

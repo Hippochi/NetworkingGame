@@ -215,7 +215,7 @@ public class NetworkedServer : MonoBehaviour
             }
         }
 
-        else if (signifier == ClientToServerSignifiers.GGWPorElse)
+        else if (signifier == ClientToServerSignifiers.ClientToClientMsgSent)
         {
 
             GameRoom gr = GetGameRoomWithClientID(id);
@@ -226,28 +226,7 @@ public class NetworkedServer : MonoBehaviour
             }
         }
 
-        else if (signifier == ClientToServerSignifiers.GLHForElse)
-        {
-
-            GameRoom gr = GetGameRoomWithClientID(id);
-
-            if (gr != null)
-            {
-
-            }
-        }
-
-        else if (signifier == ClientToServerSignifiers.CUCKorElse)
-        {
-
-            GameRoom gr = GetGameRoomWithClientID(id);
-
-            if (gr != null)
-            {
-
-            }
-        }
-
+     
 
     }
 
@@ -340,6 +319,7 @@ public class GameRoom
     {
         playerID1 = PlayerID1;
         playerID2 = PlayerID2;
+        //observer 3rd id
     }
 
 }
@@ -353,6 +333,8 @@ public static class ClientToServerSignifiers
     public const int JoinQueueForGameRoom = 3;
 
     public const int TicTacToeSomethingSomethingPlay = 4;
+
+    public const int ClientToClientMsgSent = 5;
 }
 
 public static class ServerToClientSignifiers
@@ -368,4 +350,7 @@ public static class ServerToClientSignifiers
     public const int OpponentPlay = 5;
 
     public const int GameStart = 6;
+
+    public const int ClientToClientMsgReceived = 7;
+
 }

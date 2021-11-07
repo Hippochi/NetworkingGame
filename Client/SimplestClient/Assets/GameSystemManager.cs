@@ -158,17 +158,17 @@ public class GameSystemManager : MonoBehaviour
 
     public void GGWPPressed()
     {
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGWPorElse + "");
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + ",GGWP");
     }
 
     public void GLHFPressed()
     {
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GLHForElse + "");
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + ",GLHF");
     }
 
     public void CUCKPressed()
     {
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.CUCKorElse + "");
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + "," + "CUCK" );
     }
 }
 
