@@ -168,7 +168,7 @@ public class GameSystemManager : MonoBehaviour
 
     public void CUCKPressed()
     {
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + "," + "CUCK" );
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + ",CUCK" );
     }
 }
 
