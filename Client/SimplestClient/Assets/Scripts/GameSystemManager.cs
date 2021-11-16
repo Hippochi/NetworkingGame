@@ -7,7 +7,7 @@ public class GameSystemManager : MonoBehaviour
 {
     GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, textNameInfo, textPasswordInfo, ticTacToeSquareButton, networkedClient, GGWP, GLHF, CUCK , GameMap, GameSceneUI;
 
-    GameObject joinGameRoomButton;
+    GameObject joinGameRoomButton, GameOver;
 
     GameObject a1, a2, a3, b1, b2, b3, c1, c2, c3;
     GameObject cA1, cA2, cA3, cB1, cB2, cB3, cC1, cC2, cC3;
@@ -106,6 +106,8 @@ public class GameSystemManager : MonoBehaviour
                 xC2 = go;
             else if (go.name == "xC3")
                 xC3 = go;
+            else if (go.name == "Gameover")
+                GameOver = go;
         }
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
@@ -186,6 +188,7 @@ public class GameSystemManager : MonoBehaviour
         textPasswordInfo.SetActive(false);
         joinGameRoomButton.SetActive(false);
         ticTacToeSquareButton.SetActive(false);
+        GameOver.SetActive(false);
         GameSceneUI.SetActive(false);
         GameMap.SetActive(false);
 
@@ -198,6 +201,7 @@ public class GameSystemManager : MonoBehaviour
             loginToggle.SetActive(true);
             textNameInfo.SetActive(true);
             textPasswordInfo.SetActive(true);
+            
             
         }
         else if (newState == GameStates.MainMenu)
@@ -216,6 +220,24 @@ public class GameSystemManager : MonoBehaviour
             
             GameSceneUI.SetActive(true);
             GameMap.SetActive(true);
+            xA1.SetActive(false);
+            cA1.SetActive(false);
+            xA2.SetActive(false);
+            cA2.SetActive(false);
+            xA3.SetActive(false);
+            cA3.SetActive(false);
+            xB1.SetActive(false);
+            cB1.SetActive(false);
+            xB2.SetActive(false);
+            cB2.SetActive(false);
+            xB3.SetActive(false);
+            cB3.SetActive(false);
+            xC1.SetActive(false);
+            cC1.SetActive(false);
+            xC2.SetActive(false);
+            cC2.SetActive(false);
+            xC3.SetActive(false);
+            cC3.SetActive(false);
         }
     }
 
@@ -249,6 +271,7 @@ public class GameSystemManager : MonoBehaviour
     public void a1Pressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientMoveSent + ",1");
+        Debug.Log("help");
     }
     public void a2Pressed()
     {
@@ -286,6 +309,7 @@ public class GameSystemManager : MonoBehaviour
 
     public void PlayerMoved(int n, int p)
     {
+        
         switch (n)
         {
             case 1:
@@ -293,7 +317,6 @@ public class GameSystemManager : MonoBehaviour
                 {
                     xA1.SetActive(true);
                     a1.SetActive(false);
-                    Debug.Log(xA1.enabled);
                 }
                 else
                 { 
@@ -409,6 +432,61 @@ public class GameSystemManager : MonoBehaviour
 
 
         }
+        CheckForWinner();
+
+    }
+    public void PlayerWon(int n)
+    {
+        GameOver.SetActive(true);
+        if (n == 1)
+        {
+            GameOver.GetComponent<RectTransform>().Find("Winner").GetComponent<UnityEngine.UI.Text>().text = "Cross' Victory!";
+        }
+        if (n == 2)
+        {
+            GameOver.GetComponent<RectTransform>().Find("Winner").GetComponent<UnityEngine.UI.Text>().text = "Circle's Victory!";
+        }
+        if (n == 3)
+        {
+            GameOver.GetComponent<RectTransform>().Find("Winner").GetComponent<UnityEngine.UI.Text>().text = "A tie... Boring";
+        }
+    }
+
+    public void CheckForWinner()
+    {
+        if (xA1.activeSelf && xA2.activeSelf && xA3.activeSelf) 
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1"); 
+        if (xB1.activeSelf && xB2.activeSelf && xB3.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xC1.activeSelf && xC2.activeSelf && xC3.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xA1.activeSelf && xB1.activeSelf && xC1.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xA2.activeSelf && xB2.activeSelf && xC2.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xA3.activeSelf && xB3.activeSelf && xC3.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xA1.activeSelf && xB2.activeSelf && xC3.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+        if (xA3.activeSelf && xB2.activeSelf && xC1.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",1");
+
+        if (cA1.activeSelf && cA2.activeSelf && cA3.activeSelf)
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cB1.activeSelf && cB2.activeSelf && cB3.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cC1.activeSelf && cC2.activeSelf && cC3.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cA1.activeSelf && cB1.activeSelf && cC1.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cA2.activeSelf && cB2.activeSelf && cC2.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cA3.activeSelf && cB3.activeSelf && cC3.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cA1.activeSelf && cB2.activeSelf && cC3.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
+        if (cA3.activeSelf && cB2.activeSelf && cC1.activeSelf)                                                        
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
 
     }
 }

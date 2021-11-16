@@ -154,6 +154,11 @@ public class NetworkedClient : MonoBehaviour
         {
             gameSystemManager.GetComponent<GameSystemManager>().PlayerMoved(int.Parse (csv[1]), int.Parse (csv[2]));
         }
+
+        else if (signifier == ServerToClientSignifiers.WinnerTold)
+        {
+            gameSystemManager.GetComponent<GameSystemManager>().PlayerWon(int.Parse(csv[1]));
+        }
     }
 
     public bool IsConnected()
@@ -178,6 +183,8 @@ public static class ClientToServerSignifiers
 
     public const int ClientMoveSent = 6;
 
+    public const int WinnerFound = 7;
+
 }
 
 public static class ServerToClientSignifiers
@@ -198,4 +205,6 @@ public static class ServerToClientSignifiers
     public const int ClientToClientMsgReceived = 7;
 
     public const int ClientMoveReceived = 8;
+
+    public const int WinnerTold = 9;
 }
