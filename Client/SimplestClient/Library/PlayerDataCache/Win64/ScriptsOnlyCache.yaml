@@ -386,7 +386,7 @@ ScriptsOnlyBuild:
     className: ContentSizeFitter
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: d597346f87aa4228b0dad49eecafd453
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NetworkedClient

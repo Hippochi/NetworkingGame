@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class GameSystemManager : MonoBehaviour
 {
     GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, textNameInfo, textPasswordInfo, ticTacToeSquareButton, networkedClient, GGWP, GLHF, CUCK , GameMap, GameSceneUI;
-
-    GameObject joinGameRoomButton, GameOver;
+    
+    GameObject joinGameRoomButton, GameOver, SendText, ChatField, ReplayButton;
 
     GameObject a1, a2, a3, b1, b2, b3, c1, c2, c3;
     GameObject cA1, cA2, cA3, cB1, cB2, cB3, cC1, cC2, cC3;
     GameObject xA1, xA2, xA3, xB1, xB2, xB3, xC1, xC2, xC3;
+
+    private bool nextMove;
 
 
     void Start()
@@ -108,6 +110,12 @@ public class GameSystemManager : MonoBehaviour
                 xC3 = go;
             else if (go.name == "Gameover")
                 GameOver = go;
+            else if (go.name == "SendButton")
+                SendText = go;
+            else if (go.name == "ChatField")
+                ChatField = go;
+            else if (go.name == "Replay")
+                ReplayButton = go;
         }
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
@@ -121,6 +129,8 @@ public class GameSystemManager : MonoBehaviour
         GGWP.GetComponent<Button>().onClick.AddListener(GGWPPressed);
         GLHF.GetComponent<Button>().onClick.AddListener(GLHFPressed);
         CUCK.GetComponent<Button>().onClick.AddListener(CUCKPressed);
+        SendText.GetComponent<Button>().onClick.AddListener(SendPressed);
+        ReplayButton.GetComponent<Button>().onClick.AddListener(ReplayPressed);
 
         a1.GetComponent<Button>().onClick.AddListener(a1Pressed);
         a2.GetComponent<Button>().onClick.AddListener(a2Pressed);
@@ -131,6 +141,7 @@ public class GameSystemManager : MonoBehaviour
         c1.GetComponent<Button>().onClick.AddListener(c1Pressed);
         c2.GetComponent<Button>().onClick.AddListener(c2Pressed);
         c3.GetComponent<Button>().onClick.AddListener(c3Pressed);
+
         ChangeState(GameStates.LoginMenu);
 
     }
@@ -238,6 +249,38 @@ public class GameSystemManager : MonoBehaviour
             cC2.SetActive(false);
             xC3.SetActive(false);
             cC3.SetActive(false);
+            a1.SetActive(true);
+            a2.SetActive(true);
+            a3.SetActive(true);
+            b1.SetActive(true);
+            b2.SetActive(true);
+            b3.SetActive(true);
+            c1.SetActive(true);
+            c2.SetActive(true);
+            c3.SetActive(true);
+        }
+        else if (newState == GameStates.Replay)
+        {
+            GameSceneUI.SetActive(true);
+            GameMap.SetActive(true);
+            xA1.SetActive(false);
+            cA1.SetActive(false);
+            xA2.SetActive(false);
+            cA2.SetActive(false);
+            xA3.SetActive(false);
+            cA3.SetActive(false);
+            xB1.SetActive(false);
+            cB1.SetActive(false);
+            xB2.SetActive(false);
+            cB2.SetActive(false);
+            xB3.SetActive(false);
+            cB3.SetActive(false);
+            xC1.SetActive(false);
+            cC1.SetActive(false);
+            xC2.SetActive(false);
+            cC2.SetActive(false);
+            xC3.SetActive(false);
+            cC3.SetActive(false);
         }
     }
 
@@ -267,16 +310,37 @@ public class GameSystemManager : MonoBehaviour
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + ",CUCK" );
     }
+    
+    public void SendPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientToClientMsgSent + "," + ChatField.GetComponent<InputField>().text);
+        ChatField.GetComponent<InputField>().text = "";
+    }
+
+    public void ReplayPressed()
+    {
+        ChangeState(GameStates.Replay);
+        int n = (networkedClient.GetComponent<NetworkedClient>().moves.Length) / 2;
+        for (int i = 0; i < n; i++)
+        {
+            StartCoroutine(ReplayMove(i));
+        }
+    }
+    public void RestartPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.NewGame + "");
+
+    }
+
 
     public void a1Pressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientMoveSent + ",1");
-        Debug.Log("help");
     }
     public void a2Pressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientMoveSent + ",2");
-    }
+     }
     public void a3Pressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientMoveSent + ",3");
@@ -305,6 +369,13 @@ public class GameSystemManager : MonoBehaviour
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ClientMoveSent + ",9");
         
+    }
+
+    IEnumerator ReplayMove(int i)
+    {
+        yield return new WaitForSeconds(i);
+            PlayerMoved(networkedClient.GetComponent<NetworkedClient>().moves[i], networkedClient.GetComponent<NetworkedClient>().moves[i + 1]);
+
     }
 
     public void PlayerMoved(int n, int p)
@@ -430,7 +501,7 @@ public class GameSystemManager : MonoBehaviour
                 break;
 
 
-
+                nextMove = false;
         }
         CheckForWinner();
 
@@ -489,6 +560,8 @@ public class GameSystemManager : MonoBehaviour
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.WinnerFound + ",2");
 
     }
+
+    
 }
 
 
@@ -498,4 +571,5 @@ static public class GameStates
     public const int MainMenu = 2;
     public const int WaitingInQueueForOtherPlayer = 3;
     public const int TicTacToe = 4;
+    public const int Replay = 5;
 }

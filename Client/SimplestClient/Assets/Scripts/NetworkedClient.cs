@@ -18,6 +18,8 @@ public class NetworkedClient : MonoBehaviour
     bool isConnected = false;
     int ourClientID;
     private Text TextBox;
+    public int[] moves;
+    public int movesI = 0;
 
     GameObject gameSystemManager;
 
@@ -141,23 +143,31 @@ public class NetworkedClient : MonoBehaviour
 
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
-            Debug.Log("Opponent Play!"); 
+            Debug.Log("Opponent Play!");
         }
 
         else if (signifier == ServerToClientSignifiers.ClientToClientMsgReceived)
         {
             Debug.Log("msgreceived");
-            TextBox.text = TextBox.text  + csv[1] + "\n";
+            TextBox.text = TextBox.text + csv[1] + "\n";
         }
 
         else if (signifier == ServerToClientSignifiers.ClientMoveReceived)
         {
-            gameSystemManager.GetComponent<GameSystemManager>().PlayerMoved(int.Parse (csv[1]), int.Parse (csv[2]));
+            gameSystemManager.GetComponent<GameSystemManager>().PlayerMoved(int.Parse(csv[1]), int.Parse(csv[2]));
+            moves[movesI] = int.Parse(csv[1]);
+            moves[movesI + 1] = int.Parse(csv[2]);
+            movesI += 2;
         }
 
         else if (signifier == ServerToClientSignifiers.WinnerTold)
         {
             gameSystemManager.GetComponent<GameSystemManager>().PlayerWon(int.Parse(csv[1]));
+        }
+
+        else if (signifier == ServerToClientSignifiers.NewGameRequest)
+        {
+            gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToe);
         }
     }
 
@@ -185,6 +195,8 @@ public static class ClientToServerSignifiers
 
     public const int WinnerFound = 7;
 
+    public const int NewGame = 8;
+
 }
 
 public static class ServerToClientSignifiers
@@ -207,4 +219,6 @@ public static class ServerToClientSignifiers
     public const int ClientMoveReceived = 8;
 
     public const int WinnerTold = 9;
+
+    public const int NewGameRequest = 10;
 }
