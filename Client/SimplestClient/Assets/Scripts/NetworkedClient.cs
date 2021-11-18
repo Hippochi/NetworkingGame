@@ -29,6 +29,8 @@ public class NetworkedClient : MonoBehaviour
         TextBox = GameObject.Find("MessageField").GetComponent<UnityEngine.UI.Text>();
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
+        
+
         foreach (GameObject go in allObjects)
         {
             if (go.GetComponent<GameSystemManager>() != null)
@@ -139,6 +141,8 @@ public class NetworkedClient : MonoBehaviour
         else if (signifier == ServerToClientSignifiers.GameStart)
         {
             gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToe);
+            moves = new int[18];
+            movesI = 0;
         }
 
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
@@ -155,9 +159,10 @@ public class NetworkedClient : MonoBehaviour
         else if (signifier == ServerToClientSignifiers.ClientMoveReceived)
         {
             gameSystemManager.GetComponent<GameSystemManager>().PlayerMoved(int.Parse(csv[1]), int.Parse(csv[2]));
-            moves[movesI] = int.Parse(csv[1]);
+            
             moves[movesI + 1] = int.Parse(csv[2]);
             movesI += 2;
+            gameSystemManager.GetComponent<GameSystemManager>().CheckForWinner();
         }
 
         else if (signifier == ServerToClientSignifiers.WinnerTold)

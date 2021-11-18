@@ -25,7 +25,7 @@ public class NetworkedServer : MonoBehaviour
 
     LinkedList<GameRoom> gameRooms;
 
-    
+    private bool a, b;
 
     void Start()
     {
@@ -308,7 +308,33 @@ public class NetworkedServer : MonoBehaviour
             }
 
         }
+        else if (signifier == ClientToServerSignifiers.NewGame)
+        {
+            GameRoom gr = GetGameRoomWithClientID(id);
 
+            if (gr != null)
+            {
+                
+                if (id == gr.playerID1)
+                {
+                    a = true;
+                }
+                else if (id == gr.playerID2)
+                {
+                    b = true;
+                }
+                if (a == true && b == true)
+                {
+                    SendMessageToClient(ServerToClientSignifiers.NewGameRequest + "", gr.playerID1);
+                    SendMessageToClient(ServerToClientSignifiers.NewGameRequest + "", gr.playerID2);
+                    SendMessageToClient(ServerToClientSignifiers.NewGameRequest + "", gr.observerID3);
+                    a = false;
+                    b = false;
+                    gr.movesMade = 0;
+                }
+            }
+
+        }
     }
 
     private void SavePlayerAccounts()
@@ -420,7 +446,9 @@ public static class ClientToServerSignifiers
 
     public const int ClientMoveSent = 6;
 
-    public const int WinnerFound = 7; 
+    public const int WinnerFound = 7;
+
+    public const int NewGame = 8;
 }
 
 public static class ServerToClientSignifiers
@@ -442,5 +470,7 @@ public static class ServerToClientSignifiers
     public const int ClientMoveReceived = 8;
 
     public const int WinnerTold = 9;
+
+    public const int NewGameRequest = 10;
 
 }
