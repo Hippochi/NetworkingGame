@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class NetworkedServer : MonoBehaviour
 {
-    const int maxConnections = 1000;
+    const int maxConnections = 999;
     int reliableChannelID;
     int unreliableChannelID;
     int hostID;
